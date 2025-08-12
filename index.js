@@ -66,17 +66,35 @@ window.addEventListener('load', function() {
     
     setTimeout(function() {
       if (isAndroid()) {
-        // Android device - use deep link
+        // Android device - use deep link with fallback
         const destination = getDestinationURL();
-        document.location = destination;   
+        const webDestination = getWebURL();
+        
+        // Try deep link first
+        document.location = destination;
+        
+        // Fallback to web after 3 seconds if deep link fails
+        setTimeout(function() {
+          window.location.href = webDestination;
+        }, 3000);
+        
       } else if (iOS()) {
-        // iOS device - use deep link with iOS redirect method
+        // iOS device - use deep link with fallback
         const destination = getDestinationURL();
+        const webDestination = getWebURL();
+        
+        // Try deep link first
         window.location.replace(destination);
+        
+        // Fallback to web after 3 seconds if deep link fails
+        setTimeout(function() {
+          window.location.href = webDestination;
+        }, 3000);
+        
       } else {
         // Desktop or other devices - open web URL in browser
         const webDestination = getWebURL();
-        window.open(webDestination, '_blank');
+        window.location.href = webDestination;
       }
     }, 1500); // 1.5 second delay to show the loading page
   }
