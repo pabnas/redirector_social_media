@@ -1,14 +1,10 @@
 function iOS() {
-  return [
-    'iPad Simulator',
-    'iPhone Simulator',
-    'iPod Simulator',
-    'iPad',
-    'iPhone',
-    'iPod'
-  ].includes(navigator.platform)
-  // iPad on iOS 13 detection
-  || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+  // Modern iOS detection using userAgent and touch capabilities
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) 
+    // iPad on iOS 13+ detection (reports as Mac in userAgent)
+    || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    // Additional check for iOS devices
+    || /iPhone|iPad|iPod/i.test(navigator.platform)
 }
 
 function isAndroid() {
